@@ -65,3 +65,19 @@ def sgd(params, lr, batch_size):
         for param in params:
             param -= lr * param / batch_size
             param.grad.zero_()
+
+
+lr = 0.03
+num_epochs = 10
+net = linereg
+loss = squared_loss
+
+
+for epoch in range(num_epochs):
+    for X, y in data_iter(batch_size, feature, label):
+        l = loss(net(X, w, b), y)
+        l.sum().backward()
+        sgd([w, b], lr, batch_size)
+    with torch.no_grad():
+        train_l = loss(net(feature, w, b), label)
+        print('epoch %d, train loss: %.6f' % (epoch, train_l.mean()))
