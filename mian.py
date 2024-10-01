@@ -63,7 +63,7 @@ def squared_loss(y_hat, y):
 def sgd(params, lr, batch_size):
     with torch.no_grad():
         for param in params:
-            param -= lr * param / batch_size
+            param -= lr * param.grad / batch_size
             param.grad.zero_()
 
 
@@ -81,3 +81,6 @@ for epoch in range(num_epochs):
     with torch.no_grad():
         train_l = loss(net(feature, w, b), label)
         print('epoch %d, train loss: %.6f' % (epoch, train_l.mean()))
+
+print(f"w误差估计：{true_w - w.reshape(true_w.shape)}")
+print(f"b的误差估计{true_b - b}")
